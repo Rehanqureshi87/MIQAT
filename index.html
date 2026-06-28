@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MIQAT - Prayer Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;family=Syne:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .orange-glow {
+            box-shadow: 0 0 30px 2px rgba(242, 86, 35, 0.3);
+        }
+        .pulse-orange {
+            animation: pulse-orange 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-orange {
+            0%, 100% { border-color: rgba(250, 92, 41, 1); box-shadow: 0 0 15px rgba(250, 92, 41, 0.4); }
+            50% { border-color: rgba(250, 92, 41, 0.4); box-shadow: 0 0 5px rgba(250, 92, 41, 0.1); }
+        }
+        .radial-gradient-bg {
+            background: radial-gradient(circle at 50% 20%, rgba(242, 86, 35, 0.15) 0%, rgba(13, 17, 23, 0) 60%);
+        }
+        body {
+            background-color: #0D1117;
+            color: #dfe2eb;
+            overflow-x: hidden;
+        }
+        /* Custom ring spacing for circular progress */
+        .ring-path {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 170; /* 40% of 283 is 113.2, so 283-113 = 170 offset */
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#5a4139",
+                    "surface-tint": "#ffb59f",
+                    "surface-bright": "#353940",
+                    "on-tertiary": "#00344f",
+                    "on-surface": "#dfe2eb",
+                    "on-secondary-fixed": "#00210c",
+                    "on-error": "#690005",
+                    "primary-container": "#fa5c29",
+                    "outline": "#aa8980",
+                    "inverse-on-surface": "#2d3137",
+                    "primary-fixed": "#ffdbd1",
+                    "on-primary-fixed-variant": "#862300",
+                    "on-primary-container": "#531200",
+                    "secondary-fixed-dim": "#4ae183",
+                    "surface-container-highest": "#31353c",
+                    "on-tertiary-container": "#002d45",
+                    "surface-container-low": "#181c22",
+                    "surface": "#10141a",
+                    "background": "#10141a",
+                    "tertiary": "#8dcdff",
+                    "inverse-surface": "#dfe2eb",
+                    "on-primary-fixed": "#3a0a00",
+                    "on-tertiary-fixed-variant": "#004b70",
+                    "on-secondary-container": "#00431f",
+                    "secondary": "#4ae183",
+                    "primary": "#ffb59f",
+                    "error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb59f",
+                    "surface-container": "#1c2026",
+                    "on-secondary": "#003919",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#e3beb4",
+                    "secondary-container": "#06bb63",
+                    "surface-container-lowest": "#0a0e14",
+                    "surface-variant": "#31353c",
+                    "inverse-primary": "#af3000",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#001e30",
+                    "tertiary-fixed-dim": "#8dcdff",
+                    "surface-container-high": "#262a31",
+                    "on-background": "#dfe2eb",
+                    "tertiary-container": "#1899dc",
+                    "secondary-fixed": "#6bfe9c",
+                    "tertiary-fixed": "#cae6ff",
+                    "on-primary": "#5f1600",
+                    "surface-dim": "#10141a",
+                    "on-secondary-fixed-variant": "#005228"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "lg": "48px",
+                    "sm": "12px",
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "md": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-caps": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Syne"],
+                    "display-lg": ["Syne"],
+                    "timer-display": ["JetBrains Mono"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Syne"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "timer-display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-surface radial-gradient-bg min-h-screen pb-32" style="background-color: #0D0D0D; min-height: max(884px, 100dvh);">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/10 border-b border-white/10 shadow-sm">
+<div class="flex items-center justify-between px-md py-sm w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/20">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-fashion portrait of a serene Middle Eastern man in profile, softly lit by amber ambient light against a deep slate background. The style is hyper-realistic with a focus on sophisticated skin textures and deep shadows, maintaining the liquid glass aesthetic with subtle crystal-like lens flares." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKthVUcrMMHg7C3DQM-2HYLuszUYhG4301asQyXkgQZ9AaAyfh3ZIzDN97QNv0MtGwrwaleI3qactVkFWUQpLpR2ZxC5MgNQ-F2SWDfFeh-sdXdmD8lY9xw5SHElL-UvnUNJCpdkZPrwdsCq8XK4JZRWuUBlIoBPd05oqnzMZMG87HA1mj28Q86dGr6m0dWny67SD6Am333DfNKHEsLvIkDiZCMeo2WvkzAfP-q56_JHLrPSBl4p1i"/>
+</div>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile md:text-headline-md tracking-widest text-primary uppercase">MIQAT</h1>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform" data-icon="notifications">notifications</button>
+</div>
+</header>
+<main class="pt-24 px-md max-w-md mx-auto space-y-lg">
+<!-- Header Section: Current Prayer -->
+<section class="text-center relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-primary-container/20 blur-[60px] rounded-full -z-10"></div>
+<div class="space-y-xs">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tighter uppercase">ASR</h2>
+<div class="font-timer-display text-timer-display text-primary tracking-widest" id="countdown">01:42:05</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Time remaining</p>
+</div>
+</section>
+<!-- Daily Progress Card -->
+<section>
+<div class="glass-panel rounded-lg p-lg flex flex-col items-center gap-md shadow-xl">
+<div class="relative w-32 h-32">
+<!-- SVG Progress Ring -->
+<svg class="w-full h-full -rotate-90">
+<circle class="text-white/5" cx="64" cy="64" fill="transparent" r="45" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary ring-path" cx="64" cy="64" fill="transparent" r="45" stroke="currentColor" stroke-linecap="round" stroke-width="8" style="filter: drop-shadow(0 0 8px rgba(242, 86, 35, 0.6));"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg-mobile text-on-surface">40%</span>
+</div>
+</div>
+<div class="text-center">
+<h3 class="font-headline-md text-on-surface">Daily Progress</h3>
+<p class="font-body-md text-on-surface-variant">2 of 5 prayers completed</p>
+</div>
+</div>
+</section>
+<!-- Prayer List -->
+<section class="space-y-sm">
+<!-- Completed: Fajr -->
+<div class="glass-panel rounded-full px-lg py-md flex items-center justify-between border-transparent">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shadow-[0_0_15px_rgba(74,225,131,0.2)]">
+<span class="material-symbols-outlined" data-icon="check" style="font-variation-settings: 'FILL' 0; font-weight: 600;">check</span>
+</div>
+<div>
+<h4 class="font-body-lg text-on-surface font-semibold">Fajr</h4>
+<p class="font-label-caps text-label-caps text-secondary uppercase">Completed 05:12 AM</p>
+</div>
+</div>
+</div>
+<!-- Completed: Dhuhr -->
+<div class="glass-panel rounded-full px-lg py-md flex items-center justify-between border-transparent">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary shadow-[0_0_15px_rgba(74,225,131,0.2)]">
+<span class="material-symbols-outlined" data-icon="check" style="font-variation-settings: 'FILL' 0; font-weight: 600;">check</span>
+</div>
+<div>
+<h4 class="font-body-lg text-on-surface font-semibold">Dhuhr</h4>
+<p class="font-label-caps text-label-caps text-secondary uppercase">Completed 12:45 PM</p>
+</div>
+</div>
+</div>
+<!-- Active: Asr -->
+<div class="glass-panel rounded-[2rem] p-base border-2 pulse-orange flex flex-col gap-sm">
+<div class="px-lg pt-sm flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="schedule" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div>
+<h4 class="font-body-lg text-on-surface font-bold">Asr</h4>
+<p class="font-label-caps text-label-caps text-primary uppercase">Current • 03:45 PM</p>
+</div>
+</div>
+</div>
+<button class="mx-xs mb-xs py-4 px-lg bg-gradient-to-r from-primary-container to-primary text-on-primary-container rounded-full font-bold flex items-center justify-between shadow-lg active:scale-[0.98] transition-all">
+<span>LOG COMPLETION</span>
+<div class="w-8 h-8 rounded-full bg-on-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</button>
+</div>
+<!-- Upcoming: Maghrib -->
+<div class="glass-panel opacity-30 rounded-full px-lg py-md flex items-center justify-between border-transparent">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="wb_twilight">wb_twilight</span>
+</div>
+<div>
+<h4 class="font-body-lg text-on-surface font-semibold">Maghrib</h4>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">06:12 PM</p>
+</div>
+</div>
+</div>
+<!-- Upcoming: Isha -->
+<div class="glass-panel opacity-30 rounded-full px-lg py-md flex items-center justify-between border-transparent">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</div>
+<div>
+<h4 class="font-body-lg text-on-surface font-semibold">Isha</h4>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">07:35 PM</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-md left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-md rounded-full backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-50">
+<div class="flex justify-around items-center p-base">
+<!-- Home (Active) -->
+<a class="flex items-center justify-center bg-surface-container-highest text-primary rounded-full w-12 h-12 shadow-inner active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+</a>
+<!-- History -->
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</a>
+<!-- Explore -->
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center justify-center text-on-surface-variant w-12 h-12 hover:text-primary transition-colors active:scale-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple countdown logic for the UI demonstration
+        let time = 3600 + 42 * 60 + 5; // 01:42:05 in seconds
+        const display = document.getElementById('countdown');
+
+        function updateTimer() {
+            const h = Math.floor(time / 3600).toString().padStart(2, '0');
+            const m = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
+            const s = (time % 60).toString().padStart(2, '0');
+            display.textContent = `${h}:${m}:${s}`;
+            if (time > 0) time--;
+        }
+
+        setInterval(updateTimer, 1000);
+    </script>
+</body></html>
