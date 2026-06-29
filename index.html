@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MIQAT | Prayer Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#171717",
+                    "on-error": "#690005",
+                    "background": "#171717",
+                    "on-secondary": "#303030",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-secondary-fixed-variant": "#474746",
+                    "inverse-on-surface": "#3d2c28",
+                    "inverse-surface": "#f9dcd5",
+                    "on-primary-fixed": "#3a0a00",
+                    "surface-variant": "#42312c",
+                    "on-secondary-container": "#b6b5b4",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "on-primary-container": "#531200",
+                    "on-tertiary-fixed-variant": "#004b70",
+                    "primary": "#F25623",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#3F3F3F",
+                    "surface-container-high": "#362621",
+                    "secondary-fixed": "#e4e2e1",
+                    "tertiary-fixed": "#cae6ff",
+                    "on-primary": "#000000",
+                    "primary-fixed-dim": "#F25623",
+                    "surface-tint": "#F25623",
+                    "surface": "#171717",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#42312c",
+                    "surface-bright": "#473530",
+                    "surface-container-lowest": "#180b07",
+                    "primary-container": "#F25623",
+                    "tertiary-fixed-dim": "#8dcdff",
+                    "on-background": "#FFFFFF",
+                    "outline": "#3F3F3F",
+                    "on-surface-variant": "#DEDEDE",
+                    "on-tertiary": "#00344f",
+                    "tertiary-container": "#1899dc",
+                    "inverse-primary": "#af3000",
+                    "on-surface": "#FFFFFF",
+                    "primary-fixed": "#ffdbd1",
+                    "surface-container-low": "#271814",
+                    "surface-container": "#2A2A2A",
+                    "tertiary": "#8dcdff",
+                    "secondary": "#c8c6c5",
+                    "on-primary-fixed-variant": "#862300",
+                    "on-tertiary-container": "#002d45",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed": "#001e30",
+                    "secondary-container": "#474746"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "gutter": "16px",
+                    "sm": "12px",
+                    "container-padding": "20px",
+                    "base": "8px",
+                    "lg": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "data-display": ["Geist"],
+                    "body-lg": ["Geist"],
+                    "body-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "label-caps": ["Space Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-display": ["56px", {"lineHeight": "60px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #171717;
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+        }
+        .custom-glow {
+            box-shadow: 0 0 20px rgba(242, 86, 35, 0.15);
+        }
+        .prayer-card-active {
+            border-top: 2px solid #F25623 !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #F25623;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden pb-24">
+<!-- Top App Bar -->
+<header class="bg-surface sticky top-0 z-50 w-full border-b border-outline-variant">
+<div class="flex items-center justify-between px-gutter h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="transition-opacity duration-200 hover:opacity-80 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">MIQAT</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest hidden md:block">London, UK</span>
+<button class="transition-opacity duration-200 hover:opacity-80 text-primary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding pt-base">
+<!-- Hero Progress Section -->
+<section class="py-md md:py-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-xs">
+<div class="flex items-center">
+<span class="active-dot"></span>
+<p class="font-label-caps text-label-caps text-primary uppercase">Current State: Asr</p>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Time remaining</h2>
+<div class="font-data-display text-data-display text-primary tracking-tighter" id="countdown">
+                    01:42:08
+                </div>
+<p class="text-on-surface-variant font-body-md">Until Maghrib prayer</p>
+</div>
+<!-- Bento Progress Widget -->
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant w-full md:w-80 space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">DAILY PROGRESS</span>
+<span class="font-label-caps text-label-caps text-primary">2 / 5</span>
+</div>
+<div class="h-1.5 w-full bg-outline-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 40%"></div>
+</div>
+<p class="font-body-md text-on-surface-variant text-[14px]">You have completed Fajr and Dhuhr.</p>
+</div>
+</section>
+<!-- Divider -->
+<div class="h-px w-full bg-outline-variant my-md"></div>
+<!-- Prayer List Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-sm pb-xl">
+<!-- Fajr -->
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant flex flex-col justify-between h-48 transition-all hover:border-primary/50 group">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">04:12 AM</p>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-xs">Fajr</h3>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[12px] font-label-caps text-on-surface-variant group-hover:text-primary transition-colors">COMPLETED</span>
+</div>
+</div>
+<!-- Dhuhr -->
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant flex flex-col justify-between h-48 transition-all hover:border-primary/50 group">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">12:45 PM</p>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-xs">Dhuhr</h3>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[12px] font-label-caps text-on-surface-variant group-hover:text-primary transition-colors">COMPLETED</span>
+</div>
+</div>
+<!-- Asr (Active) -->
+<div class="bg-surface-container p-md rounded-lg border border-primary prayer-card-active flex flex-col justify-between h-48 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-full bg-primary/5 pointer-events-none"></div>
+<div class="flex justify-between items-start z-10">
+<div>
+<p class="font-label-caps text-label-caps text-primary">04:32 PM</p>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-xs">Asr</h3>
+</div>
+<span class="material-symbols-outlined text-primary animate-pulse">radio_button_checked</span>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-sm px-md rounded-sm w-full transition-transform active:scale-95 z-10 hover:bg-[#FF6B3D]">
+                    LOG COMPLETION
+                </button>
+</div>
+<!-- Maghrib -->
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant flex flex-col justify-between h-48 transition-all hover:border-primary/50 group opacity-60">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">07:58 PM</p>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-xs">Maghrib</h3>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[12px] font-label-caps text-on-surface-variant">UPCOMING</span>
+</div>
+</div>
+<!-- Isha -->
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant flex flex-col justify-between h-48 transition-all hover:border-primary/50 group opacity-60">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">09:14 PM</p>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-xs">Isha</h3>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[12px] font-label-caps text-on-surface-variant">UPCOMING</span>
+</div>
+</div>
+</section>
+<!-- Insights / Graphic Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-md pb-md">
+<div class="lg:col-span-2 relative h-64 rounded-xl overflow-hidden bg-surface-container border border-outline-variant group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A detailed digital architectural photography shot of a modern mosque silhouette against a vibrant orange and deep black dusk sky. The lighting is cinematic, highlighting clean geometric lines and minimal structures. The overall mood is precise, quiet, and spiritual, with a focus on high-contrast industrial minimalism and premium digital craft." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD0jUw7kapJ1zSA9NmI73HdZSTqfzvPkmxmqg662GE0qHzRt1kUn6eREdvwZaFGM857CqeRclvfENxDEw-Kn3beQA3_FRyqogGS678n5FGIlBKBvB8pjklQVgRJ_QdXqHb5ciM5EwIJnxKLDA2CNssGUN9Qt-oSskwd-WmufL_xyyfG-JpaUYoAI4t9ReF2YDuzJ4p_ac9quDyT1L2F8TEGPvfpmSAdTGfOf4zwioEH0tCF4FQKC91M')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-md left-md">
+<p class="font-label-caps text-label-caps text-primary">NIGHTFALL PHASE</p>
+<h4 class="font-headline-md text-headline-md text-on-surface">Precision timing for every transition.</h4>
+</div>
+</div>
+<div class="bg-surface-container p-md rounded-xl border border-outline-variant flex flex-col justify-center space-y-sm">
+<span class="material-symbols-outlined text-primary text-4xl">analytics</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Weekly Streak</h4>
+<p class="text-on-surface-variant font-body-md">You've maintained a 100% completion rate for the last 12 days. Discipline is the core of focus.</p>
+<div class="flex gap-2 pt-xs">
+<div class="h-8 w-8 bg-primary/20 border border-primary flex items-center justify-center text-[10px] font-bold text-primary">M</div>
+<div class="h-8 w-8 bg-primary/20 border border-primary flex items-center justify-center text-[10px] font-bold text-primary">T</div>
+<div class="h-8 w-8 bg-primary/20 border border-primary flex items-center justify-center text-[10px] font-bold text-primary">W</div>
+<div class="h-8 w-8 bg-primary/20 border border-primary flex items-center justify-center text-[10px] font-bold text-primary">T</div>
+<div class="h-8 w-8 bg-primary flex items-center justify-center text-[10px] font-bold text-on-primary">F</div>
+<div class="h-8 w-8 bg-outline-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">S</div>
+<div class="h-8 w-8 bg-outline-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">S</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center bg-surface px-4 z-50 h-20 border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-2 pb-3 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-2 pb-3 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-caps text-label-caps mt-1">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-2 pb-3 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-label-caps mt-1">Qibla</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-2 pb-3 hover:text-primary active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps mt-1">Settings</span>
+</a>
+</nav>
+<script>
+        // Simple countdown logic simulation
+        let hours = 1;
+        let minutes = 42;
+        let seconds = 8;
+        
+        const countdownEl = document.getElementById('countdown');
+        
+        setInterval(() => {
+            seconds--;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes = 59;
+                hours--;
+            }
+            
+            const h = hours.toString().padStart(2, '0');
+            const m = minutes.toString().padStart(2, '0');
+            const s = seconds.toString().padStart(2, '0');
+            
+            countdownEl.textContent = `${h}:${m}:${s}`;
+        }, 1000);
+    </script>
+</body></html>
